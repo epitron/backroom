@@ -22,7 +22,7 @@ def log(msg_hash)
 end
 
 def broadcast(msg_hash)
-  $sockets.each{|s| s.send(msg_hash.to_json) }
+  $users.each{|s,username| s.send(msg_hash.to_json) }
 end
 
 # def timestamp(at=nil)
@@ -43,7 +43,7 @@ get '/' do
           ws.send(json)
         end
 
-        $sockets[ws] = ""
+        $users[ws] = ""
       end
 
       # Receive message from the client
@@ -56,7 +56,7 @@ get '/' do
 
       ws.onclose do
         warn("websocket #{ws} closed")
-        $sockets.delete(ws)
+        $users.delete(ws)
       end
     end
   end
